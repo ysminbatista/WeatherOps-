@@ -5,5 +5,5 @@ COPY packages/db/package.json packages/db/
 COPY backend/package.json backend/
 COPY worker/package.json worker/
 COPY frontend/package.json frontend/
-RUN npm install
+RUN npm config set fetch-retries 5 && npm install
 COPY . .

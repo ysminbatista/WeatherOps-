@@ -17,6 +17,7 @@ services:
 
   migrate:
     build: .
+    image: weatherops-app
     command: sh -c "npm run migrate && npm run seed"
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
@@ -26,6 +27,7 @@ services:
 
   backend:
     build: .
+    image: weatherops-app
     command: npm start -w backend
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
@@ -38,6 +40,7 @@ services:
 
   worker:
     build: .
+    image: weatherops-app
     command: npm start -w worker
     environment:
       DATABASE_URL: postgres://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres:5432/${POSTGRES_DB}
@@ -47,6 +50,7 @@ services:
 
   frontend:
     build: .
+    image: weatherops-app
     command: sh -c "npm run build -w frontend && npm start -w frontend"
     environment:
       BACKEND_URL: http://backend:3001
