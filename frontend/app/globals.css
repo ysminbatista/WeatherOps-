@@ -1,0 +1,95 @@
+:root {
+  --bg: #f4f6f8;
+  --surface: #ffffff;
+  --text: #1b2430;
+  --muted: #5b6470;
+  --border: #e3e6ea;
+  --accent: #1c7ed6;
+  --warn-bg: #fff4e0;
+  --warn-text: #7a4a00;
+  --risk-bg: #fff0f0;
+  --risk-border: #e03131;
+  --risk-text: #a61e1e;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #12161c;
+    --surface: #1b2129;
+    --text: #e8ecf1;
+    --muted: #a0aab6;
+    --border: #2c3540;
+    --accent: #74b0f0;
+    --warn-bg: #3a2c10;
+    --warn-text: #ffd591;
+    --risk-bg: #3a1a1a;
+    --risk-border: #ff6b6b;
+    --risk-text: #ffa8a8;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; }
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  line-height: 1.4;
+}
+a { color: var(--accent); }
+
+.page { max-width: 1100px; margin: 0 auto; padding: 16px; display: flex; flex-direction: column; gap: 20px; min-height: 100vh; }
+main { display: flex; flex-direction: column; gap: 20px; flex: 1; }
+h1 { margin: 0; font-size: 1.4rem; }
+h2 { margin: 0 0 12px; font-size: 1.1rem; }
+
+.header-row { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px; }
+.header-row h1 { margin-right: auto; }
+.select-wrap { display: flex; align-items: center; gap: 8px; color: var(--muted); }
+select {
+  font: inherit; padding: 6px 10px; border-radius: 8px; border: 1px solid var(--border);
+  background: var(--surface); color: var(--text); min-height: 40px;
+}
+.updated { margin: 0; color: var(--muted); }
+.updated strong { color: var(--text); }
+
+.banner { margin: 12px 0 0; padding: 10px 14px; border-radius: 8px; }
+.banner-warn { background: var(--warn-bg); color: var(--warn-text); }
+
+.state { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 32px 16px; text-align: center; color: var(--muted); }
+.state strong { display: block; font-size: 1.2rem; color: var(--text); margin-bottom: 4px; }
+.state p { margin: 0; }
+.state-error { color: var(--risk-text); border-color: var(--risk-border); }
+
+.cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 12px; }
+.card { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; display: flex; flex-direction: column; gap: 6px; }
+.card-label { color: var(--muted); font-size: 0.85rem; }
+.card-value { font-size: 1.6rem; white-space: nowrap; font-weight: 600; font-variant-numeric: tabular-nums; }
+.card-hint { color: var(--muted); font-size: 0.85rem; }
+
+.charts { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 440px), 1fr)); gap: 12px; }
+.panel { margin: 0; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 14px; }
+.panel figcaption { font-weight: 600; margin-bottom: 8px; }
+.chart-box { width: 100%; height: 260px; }
+
+.days { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 12px; }
+@media (min-width: 1000px) { .days { grid-template-columns: repeat(7, 1fr); } }
+.day { background: var(--surface); border: 1px solid var(--border); border-radius: 12px; padding: 12px; display: flex; flex-direction: column; gap: 6px; }
+.day-risk { background: var(--risk-bg); border-color: var(--risk-border); }
+.day-head { display: flex; justify-content: space-between; text-transform: capitalize; }
+.day-head span { color: var(--muted); }
+.day-icon { font-size: 2rem; }
+.day-desc { color: var(--muted); font-size: 0.85rem; min-height: 2.4em; }
+.day dl { margin: 0; display: grid; gap: 4px; font-size: 0.9rem; }
+.day dl div { display: flex; justify-content: space-between; gap: 8px; }
+.day dt { color: var(--muted); }
+.day dd { margin: 0; text-align: right; font-variant-numeric: tabular-nums; }
+.risk { margin-top: 4px; color: var(--risk-text); font-size: 0.85rem; }
+.risk-badge { font-weight: 700; }
+.risk ul { margin: 4px 0 0; padding-left: 16px; }
+
+.footer { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 8px 0 4px; }
+
+@media (max-width: 520px) {
+  .page { padding: 12px; }
+  .card-value { font-size: 1.35rem; }
+}

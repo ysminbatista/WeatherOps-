@@ -1,3 +1,5 @@
+import Dashboard from '../components/Dashboard.jsx';
+
 export default function Home() {
-  return <main><h1>WeatherOps</h1></main>;
+  return <Dashboard />;
 }
