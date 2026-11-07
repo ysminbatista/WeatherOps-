@@ -4,7 +4,7 @@
   "type": "module",
   "workspaces": ["packages/*", "backend", "worker", "frontend"],
   "scripts": {
-    "test": "npm test -w @weatherops/db && npm test -w worker",
+    "test": "npm test -w @weatherops/db && npm test -w worker && npm test -w backend",
     "migrate": "npm run migrate -w @weatherops/db",
     "seed": "npm run seed -w @weatherops/db",
     "validate-api": "node scripts/validate-api.mjs"
