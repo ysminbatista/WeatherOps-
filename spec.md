@@ -219,6 +219,13 @@ Um dia é marcado como **risco** se **qualquer** regra ativa for atingida:
 
 Todas as respostas trazem `last_updated_at` e `stale`.
 
+**Convenções implementadas (Fase 3)**
+- Respostas por local também trazem `has_data` (`false` = estado "Ainda sem dados": `last_updated_at: null`, `stale: true`, `current`/`today` nulos, listas vazias; sempre HTTP 200).
+- `last_updated_at` é o fim do último `fetch_run` com sucesso, em ISO 8601 com o offset do fuso do local; `stale` é `true` quando passou mais de 60 min.
+- A janela de `next_24h_max_precipitation_probability` vai da hora cheia em curso até `agora + 24h`; `today` é o dia civil inteiro no fuso do local.
+- `hourly` começa na hora cheia atual; `hours` padrão 48, máximo 168, valor inválido retorna 400. Local inexistente ou inativo retorna 404; métodos diferentes de GET, 405.
+- `/api/health` devolve, por local, `last_run` (qualquer status, ou `null`), `last_updated_at` e `stale`.
+
 ### `GET /api/locations`
 Lista os locais ativos.
 
