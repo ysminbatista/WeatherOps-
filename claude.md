@@ -2,7 +2,7 @@
 
 ## Commits curtos, por parte dentro da fase
 
-Não espere a fase do plano ([docs/v2/04-plano.md](docs/v2/04-plano.md)) terminar para commitar. Cada parte concluída dentro de uma fase (um schema, uma função do motor, um teste, um ajuste de doc) vira o seu próprio commit, antes de começar a próxima parte.
+Não espere a fase do plano ([docs/04-plano-faseado.md](docs/v2/04-plano.md)) terminar para commitar. Cada parte concluída dentro de uma fase (um schema, uma função do motor, um teste, um ajuste de doc) vira o seu próprio commit, antes de começar a próxima parte.
 
 ### Formato da mensagem
 
