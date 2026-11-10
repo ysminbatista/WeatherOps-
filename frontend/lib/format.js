@@ -43,6 +43,26 @@ export function fmtDayLabel(dateStr) {
   return { weekday, day: `${String(d).padStart(2, '0')}/${String(m).padStart(2, '0')}` };
 }
 
+const signed = (digits, unit) => (v) => {
+  if (!isNum(v)) return NA;
+  const n = Number(v);
+  const sign = n > 0 ? '+' : n < 0 ? '−' : '';
+  return `${sign}${nf(digits).format(Math.abs(n))} ${unit}`;
+};
+/** Diferença com sinal explícito e unidade, ex.: "+1,6 °C". */
+export const fmtDiffTemp = signed(1, S.units.temp);
+export const fmtDiffMm = signed(1, S.units.mm);
+export const fmtDiffKmh = signed(1, S.units.kmh);
+
+/** Selos da linha de comparação (só descrevem o estado dos dados). */
+export function historyBadges(day) {
+  const badges = [];
+  if (!day.forecast) badges.push(S.compare.noForecast);
+  else if (day.coverage_pct < 100) badges.push(`${S.compare.partial} (${day.coverage_pct} ${S.units.pct})`);
+  if (day.observed_status !== 'available') badges.push(S.compare.unavailable);
+  return badges;
+}
+
 // Campo do dia e formatador de cada regra (limites nunca ficam aqui; só rótulo e valor).
 const RULE_DISPLAY = {
   rain_probability: ['precipitation_probability_max', fmtPct],

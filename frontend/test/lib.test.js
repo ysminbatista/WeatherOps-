@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { weatherInfo } from '../lib/wmo.js';
 import { S } from '../lib/strings.js';
-import { describeRiskReasons, fmtDayLabel, fmtHour, fmtKmh, fmtMm, fmtPct, fmtTemp, fmtUpdatedAt } from '../lib/format.js';
+import { fmtDiffKmh, fmtDiffMm, fmtDiffTemp, historyBadges, describeRiskReasons, fmtDayLabel, fmtHour, fmtKmh, fmtMm, fmtPct, fmtTemp, fmtUpdatedAt } from '../lib/format.js';
 
 describe('wmo', () => {
   it('mapeia códigos conhecidos com ícone e descrição pt-BR', () => {
@@ -38,6 +38,27 @@ describe('format', () => {
     };
     expect(describeRiskReasons(day)).toEqual(['Chance de chuva 70 %', 'Vento 36,2 km/h']);
     expect(describeRiskReasons({ risk_reasons: [] })).toEqual([]);
+  });
+});
+
+describe('comparação', () => {
+  it('formata diferença com sinal explícito e unidade', () => {
+    expect(fmtDiffTemp(1.6)).toBe('+1,6 °C');
+    expect(fmtDiffMm(-3.5)).toBe('−3,5 mm');
+    expect(fmtDiffKmh(0)).toBe('0,0 km/h');
+    expect(fmtDiffTemp(null)).toBe('—');
+  });
+  const base = { forecast: { temperature_max: 30 }, observed_status: 'available', coverage_pct: 100 };
+  it('dia completo e com observado não tem selo', () => {
+    expect(historyBadges(base)).toEqual([]);
+  });
+  it('cobertura parcial mostra a porcentagem', () => {
+    expect(historyBadges({ ...base, coverage_pct: 50 })).toEqual(['Cobertura parcial (50 %)']);
+  });
+  it('observado indisponível e sem previsão têm selos próprios', () => {
+    expect(historyBadges({ ...base, observed_status: 'unavailable' })).toEqual(['Observado indisponível']);
+    expect(historyBadges({ forecast: null, observed_status: 'unavailable', coverage_pct: 0 }))
+      .toEqual(['Sem previsão D-1', 'Observado indisponível']);
   });
 });
 

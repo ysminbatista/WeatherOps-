@@ -11,6 +11,10 @@ export async function fetchLocations(signal) {
   return (await getJson('/api/locations', signal)).locations;
 }
 
+export async function fetchHistory(id, signal) {
+  return getJson(`/api/locations/${id}/history?days=30`, signal);
+}
+
 export async function fetchDashboard(id, signal) {
   const base = `/api/locations/${id}`;
   const [summary, hourly, daily] = await Promise.all([
