@@ -1,7 +1,8 @@
 import { fmtUpdatedAt } from '../lib/format.js';
+import Nav from './Nav.jsx';
 import { S } from '../lib/strings.js';
 
-export default function Header({ locations, selected, onSelect, lastUpdatedAt, stale }) {
+export default function Header({ current = 'dashboard', locations, selected, onSelect, lastUpdatedAt, stale }) {
   return (
     <header className="header">
       <div className="header-row">
@@ -16,6 +17,7 @@ export default function Header({ locations, selected, onSelect, lastUpdatedAt, s
           {S.lastUpdate}: <strong>{lastUpdatedAt ? fmtUpdatedAt(lastUpdatedAt) : '—'}</strong>
         </p>
       </div>
+      <Nav current={current} />
       {stale && (
         <p className="banner banner-warn" role="alert">
           {S.staleWarning} {fmtUpdatedAt(lastUpdatedAt)}

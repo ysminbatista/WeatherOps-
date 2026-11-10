@@ -89,6 +89,23 @@ select {
 
 .footer { color: var(--muted); font-size: 0.85rem; text-align: center; padding: 8px 0 4px; }
 
+.nav { display: flex; gap: 8px; margin-top: 12px; }
+.nav-link { padding: 6px 14px; border-radius: 8px; border: 1px solid var(--border); background: var(--surface); color: var(--text); text-decoration: none; }
+.nav-active { background: var(--accent); border-color: var(--accent); color: var(--bg); font-weight: 600; }
+
+.muted { color: var(--muted); margin: 0 0 8px; }
+.note { margin: 0 0 12px; padding: 10px 14px; border-radius: 8px; background: var(--surface); border: 1px solid var(--border); color: var(--muted); font-size: 0.9rem; }
+.tag { font-size: 0.75rem; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--warn-bg); color: var(--warn-text); vertical-align: middle; }
+.table-wrap { overflow-x: auto; background: var(--surface); border: 1px solid var(--border); border-radius: 12px; }
+.cmp { border-collapse: collapse; width: 100%; font-size: 0.85rem; font-variant-numeric: tabular-nums; }
+.cmp th, .cmp td { padding: 6px 8px; border-bottom: 1px solid var(--border); text-align: right; white-space: nowrap; }
+.cmp thead th { text-align: center; color: var(--muted); font-weight: 600; }
+.cmp thead tr:first-child th { border-bottom: 1px solid var(--border); }
+.cmp .cmp-date, .cmp thead th:first-child { text-align: left; position: sticky; left: 0; background: var(--surface); }
+.cmp .cmp-diff { border-right: 1px solid var(--border); font-weight: 600; }
+.cmp .cmp-status { text-align: left; white-space: normal; min-width: 180px; }
+.badge { display: inline-block; margin: 2px 4px 2px 0; padding: 2px 8px; border-radius: 999px; font-size: 0.75rem; background: var(--warn-bg); color: var(--warn-text); }
+
 @media (max-width: 520px) {
   .page { padding: 12px; }
   .card-value { font-size: 1.35rem; }
