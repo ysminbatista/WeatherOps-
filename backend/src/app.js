@@ -1,4 +1,5 @@
 import http from 'node:http';
+import { history } from './history.js';
 import { HttpError, daily, health, hourly, listLocations, summary } from './routes.js';
 
 /**
@@ -17,6 +18,7 @@ export function createServer(pool, { now = () => new Date() } = {}) {
       if (c === 'summary') return summary(pool, b, now());
       if (c === 'hourly') return hourly(pool, b, q.get('hours'), now());
       if (c === 'daily') return daily(pool, b, now());
+      if (c === 'history') return history(pool, b, q.get('days'), now());
     }
     throw new HttpError(404, 'rota não encontrada');
   }
