@@ -197,7 +197,7 @@ Cada coleta grava **novas linhas** vinculadas a um `fetch_run`, sem sobrescrever
   - o `daily_forecast` previsto D-1 (o snapshot mais próximo de 24h antes) com
   - os valores observados, calculados a partir do `current_conditions` daquele dia (máx/mín de temperatura, soma de precipitação, vento máximo).
 
-> Observação: `current_conditions` é amostrado a cada 30 min. Por isso, a máxima e a mínima "observadas" são aproximações, não medições de estação.
+> **Atualização (Fase 5):** o observado não vem mais de `current_conditions`. Um job diário (03:00, America/Sao_Paulo) busca a Historical API com `models=era5` e faz upsert em `observed_daily`, que não expira. Trata-se de **reanálise** (dado de modelo, não medição de estação) com defasagem de cerca de 7 dias; dias sem dado ficam "observado indisponível". Sem `models`, a API devolveria o dia corrente incompleto (ver `docs/05-validacao-api.md`).
 
 **Volume estimado:** 3 locais × 48 coletas/dia × 30 dias = 4.320 snapshots. Com ~168 linhas horárias cada, são ~726 mil linhas em `hourly_forecast`, o que o PostgreSQL suporta sem dificuldade.
 
@@ -259,7 +259,33 @@ Série horária para os gráficos (temperatura e chuva).
 Previsão de 7 dias com `is_risk` e `risk_reasons`.
 
 ### `GET /api/locations/:id/history?days=30`
-Previsão D-1 × observado por dia.
+Previsão D-1 × observado por dia, do dia anterior a hoje para trás, mais recente primeiro. `days` vai de 1 a 30 (padrão 30; inválido retorna 400).
+
+```json
+{
+  "location": { "id": 1, "name": "Santos" },
+  "last_updated_at": "2026-11-10T14:55:02-03:00",
+  "stale": false,
+  "has_data": true,
+  "days": 30,
+  "observed_source": "reanalysis",
+  "history": [
+    {
+      "date": "2026-11-03",
+      "forecast": { "temperature_max": 30.1, "temperature_min": 21.0, "precipitation_sum": 2.0, "wind_speed_max": 30.0 },
+      "observed": { "temperature_max": 32.9, "temperature_min": 22.4, "precipitation_sum": 0.0, "wind_speed_max": 18.3 },
+      "observed_status": "available",
+      "difference": { "temperature_max": 2.8, "temperature_min": 1.4, "precipitation_sum": -2.0, "wind_speed_max": -11.7 },
+      "coverage_pct": 100
+    }
+  ]
+}
+```
+
+- `forecast`: `daily_forecast` do snapshot com sucesso mais próximo de 24 h antes do início do dia (00:00 do dia anterior, no fuso do local), a no máximo 12 h de distância; `null` se não houver.
+- `observed`: linha de `observed_daily` (Historical API com `models=era5`, reanálise); `null` quando ainda não há dado, com `observed_status: "unavailable"`.
+- `difference` = observado − previsto; `null` se faltar um dos lados.
+- `coverage_pct` = coletas com sucesso no dia anterior ÷ 48, limitado a 100. Abaixo de 100 a tela mostra "cobertura parcial".
 
 ### `GET /api/health`
 Status do último `fetch_run` de cada local.
